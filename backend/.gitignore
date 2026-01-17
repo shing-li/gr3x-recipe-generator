@@ -9,3 +9,8 @@ wheels/
 # Virtual environments
 .venv
 .env
+
+# spec
+spec.md
+todo.md
+parameter.md
