@@ -1,0 +1,29 @@
+{
+  "id": "ce8c96f3-b846-4d13-8f9c-6d29424d5a4b",
+  "timestamp": "2026-01-18T01:27:11.266851",
+  "user_input": "日系朦朧美，拍女生皮膚白",
+  "model": "google/gemini-3-pro-preview",
+  "output": {
+    "vibe_match": "Japanese Hazy Portrait (Airy & Bright)",
+    "base_mode": "Negative Film",
+    "global_settings": {
+      "exposure_recommendation": "+0.3 to +0.7 EV",
+      "wb_setting": "Auto White Balance (AWB)",
+      "wb_shift_a": -2,
+      "wb_shift_g": 1,
+      "hdf_recommendation": "ON"
+    },
+    "parameters": {
+      "saturation": -1,
+      "hue": -1,
+      "high_low_key": 3,
+      "contrast": -2,
+      "contrast_highlight": -4,
+      "contrast_shadow": 2,
+      "sharpness": -2,
+      "shading": 0,
+      "clarity": -3
+    },
+    "note": "Designed for the 'Japanese Airy' aesthetic. HDF ON combined with low Clarity (-3) creates the dreamy 'hazy' effect. High Key (+3) and lifted Shadows (+2) ensure the skin looks fair and porcelain-like by eliminating harsh darks. Negative Film provides the base nostalgic color, while the WB shift (Blue/Magenta direction) counteracts yellow casts to keep skin tones clean."
+  }
+}

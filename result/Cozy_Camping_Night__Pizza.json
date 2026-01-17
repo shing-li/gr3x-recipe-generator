@@ -1,0 +1,29 @@
+{
+  "id": "4adeb481-1a76-49a4-a333-5b778f5b5941",
+  "timestamp": "2026-01-18T01:11:45.732103",
+  "user_input": "室外晚上露營的時候，拍手工製作的 pizza",
+  "model": "google/gemini-3-pro-preview",
+  "output": {
+    "vibe_match": "Cozy Camping Night & Pizza",
+    "base_mode": "Positive Film",
+    "global_settings": {
+      "exposure_recommendation": "-0.3 EV",
+      "wb_setting": "Daylight (5200K)",
+      "wb_shift_a": 3,
+      "wb_shift_g": -1,
+      "hdf_recommendation": "ON"
+    },
+    "parameters": {
+      "saturation": 1,
+      "hue": -1,
+      "high_low_key": -1,
+      "contrast": 1,
+      "contrast_highlight": -3,
+      "contrast_shadow": -2,
+      "sharpness": 1,
+      "shading": -2,
+      "clarity": -1
+    },
+    "note": "Uses Positive Film to make the reds and yellows of the pizza look rich and appetizing. HDF is ON to create a creamy glow on the melted cheese and interact with the campfire/lantern light. Highlights are pulled down (-3) to prevent the fire or oil reflections from blowing out, while shading (-2) adds a cinematic vignette to focus on the food."
+  }
+}
