@@ -83,6 +83,20 @@ export default function Home() {
     }
   };
 
+  const downloadRecipe = () => {
+    if (!recipe) return;
+    const jsonString = JSON.stringify(recipe, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${recipe.vibe_match.replace(/[^a-zA-Z0-9]/g, "_")}_recipe.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 p-8 font-sans">
       <main className="max-w-4xl mx-auto space-y-12">
@@ -182,8 +196,20 @@ export default function Home() {
             {/* Left Column: Overview & Global */}
             <div className="space-y-6">
               <div className="bg-white dark:bg-zinc-800 p-6 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-700">
-                <div className="uppercase tracking-wide text-sm font-bold text-blue-500 mb-2">
-                  Result
+                <div className="flex justify-between items-start mb-2">
+                  <div className="uppercase tracking-wide text-sm font-bold text-blue-500">
+                    Result
+                  </div>
+                  <button
+                    onClick={downloadRecipe}
+                    className="text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors font-medium text-zinc-600 dark:text-zinc-300"
+                    title="Download Recipe JSON"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3.5 h-3.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                    </svg>
+                    Download JSON
+                  </button>
                 </div>
                 <h2 className="text-4xl font-bold mb-2">{recipe.vibe_match}</h2>
                 <p className="text-zinc-500 dark:text-zinc-400 text-lg mb-6 italic">
