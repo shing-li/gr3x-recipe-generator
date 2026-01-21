@@ -11,6 +11,8 @@ from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
 
+from typing import List
+
 load_dotenv()
 
 app = FastAPI(title="Ricoh GR Series Recipe Generator")
@@ -35,9 +37,64 @@ if not RESULT_DIR.exists():
         # Default to ../result and create it if it doesn't exist
         RESULT_DIR.mkdir(parents=True, exist_ok=True)
 
+def get_result_dir():
+    # Helper to ensure we get the correct path dynamically if context changes
+    target = RESULT_DIR
+    if not target.exists():
+         target = Path(__file__).parent.parent.parent / "result"
+         target.mkdir(exist_ok=True)
+    return target
+
 @app.get("/")
 def health_check():
     return {"status": "ok", "service": "Ricoh GR Series Recipe Generator"}
+
+@app.get("/api/history/dates", response_model=List[str])
+def list_history_dates():
+    root_dir = get_result_dir()
+    if not root_dir.exists():
+        return []
+    
+    dates = []
+    for item in root_dir.iterdir():
+        if item.is_dir():
+            # Basic validation that it looks like a date? Optional.
+            dates.append(item.name)
+    
+    # Sort dates descending (newest first)
+    dates.sort(reverse=True)
+    return dates
+
+@app.get("/api/history/recipes/{date_str}", response_model=List[str])
+def list_recipes_for_date(date_str: str):
+    root_dir = get_result_dir()
+    date_dir = root_dir / date_str
+    
+    if not date_dir.exists() or not date_dir.is_dir():
+        raise HTTPException(status_code=404, detail="Date directory not found")
+        
+    recipes = []
+    for item in date_dir.glob("*.json"):
+        if item.is_file():
+            recipes.append(item.name)
+    
+    recipes.sort()
+    return recipes
+
+@app.get("/api/history/recipe/{date_str}/{filename}")
+def get_recipe_detail(date_str: str, filename: str):
+    root_dir = get_result_dir()
+    file_path = root_dir / date_str / filename
+    
+    if not file_path.exists() or not file_path.is_file():
+        raise HTTPException(status_code=404, detail="Recipe file not found")
+        
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read file: {e}")
 
 @app.post("/api/generate", response_model=RecipeResponse)
 def generate_recipe(request: GenerateRequest):
@@ -89,18 +146,26 @@ def generate_recipe(request: GenerateRequest):
             # Replace spaces with underscores
             safe_filename = safe_filename.replace(' ', '_')
             
+            # Determine Date Directory
+            date_str = datetime.now().strftime("%Y-%m-%d")
+            
             # Resolve absolute path to avoid confusion
             # If we are in backend/, RESULT_DIR is ../result
             # We created RESULT_DIR globally, but let's be safe
-            log_file = RESULT_DIR / f"{safe_filename}.json"
+            target_result_dir = RESULT_DIR
             
             # If the global path check failed or we are in a different cwd context
             # Let's ensure strict path relative to this file
-            if not RESULT_DIR.exists():
+            if not target_result_dir.exists():
                  # Fallback: relative to this file: backend/app/main.py -> backend/app/../../result -> backend/../result -> root/result
-                 project_root_result = Path(__file__).parent.parent.parent / "result"
-                 project_root_result.mkdir(exist_ok=True)
-                 log_file = project_root_result / f"{safe_filename}.json"
+                 target_result_dir = Path(__file__).parent.parent.parent / "result"
+                 target_result_dir.mkdir(exist_ok=True)
+            
+            # Create date subdirectory
+            date_dir = target_result_dir / date_str
+            date_dir.mkdir(parents=True, exist_ok=True)
+
+            log_file = date_dir / f"{safe_filename}.json"
 
             with open(log_file, "w", encoding="utf-8") as f:
                 json.dump(log_entry, f, ensure_ascii=False, indent=2)

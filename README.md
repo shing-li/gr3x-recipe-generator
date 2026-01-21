@@ -13,6 +13,7 @@ It leverages OpenAI's GPT models to analyze the emotional intent of your descrip
 - **Vibe-to-Recipe Engine**: Converts natural language prompts into camera settings.
 - **Ricoh Specific Logic**: tailored for Ricoh GR Image Control (Negative Film, Positive Film, etc.) and HDF optimization.
 - **Modern UI**: Supports Markdown input, tab navigation, and a responsive design.
+- **History Browsing**: Browse your past recipes organized by date with a dedicated display tab.
 - **Recipe Export**: Download generated recipes as JSON files for backup or sharing.
 - **Advanced Control**: Customizable White Balance (Daylight, Tungsten, CTE, etc.) and AB/GM shifts.
 - **Smart Logging**: Automatically saves every generated recipe as a JSON file in the `result/` directory for backup.
