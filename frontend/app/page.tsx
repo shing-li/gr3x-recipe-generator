@@ -72,8 +72,12 @@ export default function Home() {
 
       const data: RecipeResponse = await res.json();
       setRecipe(data);
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong");
+      }
     } finally {
       setLoading(false);
     }
@@ -96,14 +100,18 @@ export default function Home() {
         {/* Input Section */}
         <section className="bg-white dark:bg-zinc-800 p-6 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-700">
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col md:flex-row gap-4">
-              <input
-                type="text"
-                className="flex-1 bg-zinc-100 dark:bg-zinc-900 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                placeholder="e.g., Cyberpunk Tokyo night rain, Melancholy Sunday morning..."
+            <div className="flex flex-col md:flex-row gap-4 items-start">
+              <textarea
+                className="flex-1 bg-zinc-100 dark:bg-zinc-900 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all min-h-[160px] resize-y"
+                placeholder="Describe your vibe here... (Markdown supported)"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && generateRecipe()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                    e.preventDefault();
+                    generateRecipe();
+                  }
+                }}
               />
               <button
                 onClick={generateRecipe}
@@ -179,7 +187,7 @@ export default function Home() {
                 </div>
                 <h2 className="text-4xl font-bold mb-2">{recipe.vibe_match}</h2>
                 <p className="text-zinc-500 dark:text-zinc-400 text-lg mb-6 italic">
-                  "{recipe.note}"
+                  &quot;{recipe.note}&quot;
                 </p>
 
                 <div className="space-y-4">

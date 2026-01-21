@@ -30,6 +30,24 @@ It leverages OpenAI's GPT models to analyze the emotional intent of your descrip
 - Node.js 18 or higher
 - `uv` (Fast Python package installer)
 
+### 🚀 Quick Start (All-in-One)
+
+You can start both the backend and frontend simultaneously using the provided helper script:
+
+```bash
+# Make the script executable (only needed once)
+chmod +x dev.sh
+
+# Start the development environment
+./dev.sh
+```
+
+This will launch:
+- **Backend API**: http://localhost:8000
+- **Frontend UI**: http://localhost:3000
+
+Press `Ctrl+C` to stop both services.
+
 ### 1. Backend Setup
 
 The backend handles the AI logic and API requests.
