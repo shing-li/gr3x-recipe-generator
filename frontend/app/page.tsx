@@ -103,7 +103,7 @@ export default function Home() {
         {/* Header */}
         <header className="text-center space-y-4">
           <h1 className="text-4xl font-bold tracking-tight">
-            Ricoh GR IIIx Recipe Generator
+            Ricoh GR Series Recipe Generator
           </h1>
           <p className="text-zinc-500 dark:text-zinc-400 max-w-lg mx-auto">
             Describe a vibe, scene, or emotion, and let AI craft the perfect

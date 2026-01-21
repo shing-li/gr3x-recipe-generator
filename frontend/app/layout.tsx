@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ricoh GR IIIx Recipe Generator",
-  description: "AI-powered recipe generator for Ricoh GR IIIx cameras.",
+  title: "Ricoh GR Series Recipe Generator",
+  description: "AI-powered recipe generator for Ricoh GR Series cameras.",
 };
 
 export default function RootLayout({

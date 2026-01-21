@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app = FastAPI(title="Ricoh GR IIIx Recipe Generator")
+app = FastAPI(title="Ricoh GR Series Recipe Generator")
 
 # CORS
 app.add_middleware(
@@ -37,7 +37,7 @@ if not RESULT_DIR.exists():
 
 @app.get("/")
 def health_check():
-    return {"status": "ok", "service": "Ricoh GR IIIx Recipe Generator"}
+    return {"status": "ok", "service": "Ricoh GR Series Recipe Generator"}
 
 @app.post("/api/generate", response_model=RecipeResponse)
 def generate_recipe(request: GenerateRequest):

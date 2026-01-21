@@ -1,8 +1,8 @@
-# Ricoh GR IIIx AI Recipe Generator 📸
+# Ricoh GR Series AI Recipe Generator 📸
 
-An AI-powered tool that translates abstract "vibes" (e.g., "Cyberpunk Tokyo Night", "Melancholy Rainy Sunday") into precise custom image settings (JPEG Recipes) for the **Ricoh GR IIIx** camera.
+An AI-powered tool that translates abstract "vibes" (e.g., "Cyberpunk Tokyo Night", "Melancholy Rainy Sunday") into precise custom image settings (JPEG Recipes) for **Ricoh GR** cameras (GR III, GR IIIx, etc.).
 
-It leverages OpenAI's GPT models to analyze the emotional intent of your description and maps it to the GR IIIx's specific color science, including **Image Control** modes, **White Balance** shifts, and the new **HDF (Highlight Diffusion Filter)** logic.
+It leverages OpenAI's GPT models to analyze the emotional intent of your description and maps it to the Ricoh GR's specific color science, including **Image Control** modes, **White Balance** shifts, and **HDF (Highlight Diffusion Filter)** logic (if applicable).
 
 ![Project Status](https://img.shields.io/badge/Status-Active-success)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
@@ -11,7 +11,7 @@ It leverages OpenAI's GPT models to analyze the emotional intent of your descrip
 ## ✨ Features
 
 - **Vibe-to-Recipe Engine**: Converts natural language prompts into camera settings.
-- **Ricoh Specific Logic**: tailored for GR IIIx Image Control (Negative Film, Positive Film, etc.) and HDF optimization.
+- **Ricoh Specific Logic**: tailored for Ricoh GR Image Control (Negative Film, Positive Film, etc.) and HDF optimization.
 - **Advanced Control**: Customizable White Balance (Daylight, Tungsten, CTE, etc.) and AB/GM shifts.
 - **Smart Logging**: Automatically saves every generated recipe as a JSON file in the `result/` directory for backup.
 - **Flexible LLM Support**: Configurable Base URL and Model Name to support various AI providers (OpenAI, Local LLMs, etc.).
@@ -114,7 +114,7 @@ OPENAI_BASE_URL=...             # Optional: Custom API Endpoint
 ## 📂 Project Structure
 
 ```
-gr3x-recipe/
+gr-recipe-generator/
 ├── backend/            # FastAPI Server
 │   ├── app/            # Application logic & schemas
 │   ├── result/         # (Generated) JSON logs of recipes
