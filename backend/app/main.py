@@ -107,19 +107,38 @@ def generate_recipe(request: GenerateRequest):
     base_url = request.base_url or os.getenv("OPENAI_BASE_URL")
 
     try:
-        client = OpenAI(api_key=api_key, base_url=base_url)
+        # Set a generous timeout (e.g., 60 seconds)
+        client = OpenAI(api_key=api_key, base_url=base_url, timeout=60.0)
         
         model_name = request.model or os.getenv("OPENAI_MODEL") or "gpt-4o"
+
+        # Construct user message content
+        user_content = [{"type": "text", "text": f"Generate a recipe for: {request.prompt}"}]
+        
+        if request.images:
+            print(f"DEBUG: Processing {len(request.images)} images.")
+            for i, img_b64 in enumerate(request.images):
+                print(f"DEBUG: Image {i} length: {len(img_b64)}")
+                user_content.append({
+                    "type": "image_url",
+                    "image_url": {
+                        "url": img_b64
+                    }
+                })
 
         response = client.chat.completions.create(
             model=model_name,  # Or gpt-3.5-turbo, dependent on user budget/key
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"Generate a recipe for: {request.prompt}"}
+                {"role": "user", "content": user_content}
             ],
             response_format={"type": "json_object"},
             temperature=0.7,
         )
+
+        if not response or not response.choices:
+             print(f"DEBUG: OpenAI Response: {response}")
+             raise HTTPException(status_code=500, detail="Invalid response from AI provider (no choices returned)")
 
         content = response.choices[0].message.content
         if not content:
@@ -135,6 +154,7 @@ def generate_recipe(request: GenerateRequest):
                 "id": str(uuid.uuid4()),
                 "timestamp": datetime.now().isoformat(),
                 "user_input": request.prompt,
+                "image_count": len(request.images) if request.images else 0,
                 "model": model_name,
                 "output": data
             }
@@ -182,6 +202,8 @@ def generate_recipe(request: GenerateRequest):
     except ValidationError as e:
         raise HTTPException(status_code=500, detail=f"AI response validation error: {e}")
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 # Ricoh GR Series AI Recipe Generator 📸
 
-An AI-powered tool that translates abstract "vibes" (e.g., "Cyberpunk Tokyo Night", "Melancholy Rainy Sunday") into precise custom image settings (JPEG Recipes) for **Ricoh GR** cameras (GR III, GR IIIx, etc.).
+An AI-powered tool that translates abstract "vibes" (e.g., "Cyberpunk Tokyo Night", "Melancholy Rainy Sunday") and visual references into precise custom image settings (JPEG Recipes) for **Ricoh GR** cameras (GR III, GR IIIx, etc.).
 
-It leverages OpenAI's GPT models to analyze the emotional intent of your description and maps it to the Ricoh GR's specific color science, including **Image Control** modes, **White Balance** shifts, and **HDF (Highlight Diffusion Filter)** logic (if applicable).
+It leverages multimodal AI models (like GPT-4o) to analyze both your text descriptions and reference images (upload multiple or paste from clipboard), mapping them to the Ricoh GR's specific color science, including **Image Control** modes, **White Balance** shifts, and **HDF (Highlight Diffusion Filter)** logic.
 
 ![Project Status](https://img.shields.io/badge/Status-Active-success)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
@@ -11,18 +11,18 @@ It leverages OpenAI's GPT models to analyze the emotional intent of your descrip
 ## ✨ Features
 
 - **Vibe-to-Recipe Engine**: Converts natural language prompts into camera settings.
-- **Ricoh Specific Logic**: tailored for Ricoh GR Image Control (Negative Film, Positive Film, etc.) and HDF optimization.
-- **Modern UI**: Supports Markdown input, tab navigation, and a responsive design.
-- **History Browsing**: Browse your past recipes organized by date with a dedicated display tab.
-- **Recipe Export**: Download generated recipes as JSON files for backup or sharing.
-- **Advanced Control**: Customizable White Balance (Daylight, Tungsten, CTE, etc.) and AB/GM shifts.
-- **Smart Logging**: Automatically saves every generated recipe as a JSON file in the `result/` directory for backup.
+- **Advanced Vision Support**: Upload multiple reference photos or paste images directly from your clipboard (Ctrl+V) to let the AI analyze color palettes and tonal ranges.
+- **Expert Colorist AI**: Integrated professional color grading logic that deconstructs aesthetics into precise Ricoh parameters.
+- **Personal Collection**: "Pin" your favorite generated recipes or upload existing JSON recipes to your local browser storage.
+- **History Browsing**: Automatically logs every generated recipe by date, allowing you to browse past creations in the History tab.
+- **Ricoh Specific Logic**: Tailored for Ricoh GR Image Control (Negative Film, Positive Film, etc.) and HDF optimization.
+- **Recipe Export**: Download recipes as standard JSON files for sharing or backup.
 - **Flexible LLM Support**: Configurable Base URL and Model Name to support various AI providers (OpenAI, Local LLMs, etc.).
 
 ## 🛠️ Tech Stack
 
-- **Backend**: FastAPI (Python), Pydantic, OpenAI SDK
-- **Frontend**: Next.js (React), Tailwind CSS
+- **Backend**: FastAPI (Python), OpenAI SDK
+- **Frontend**: Next.js (React), Tailwind CSS, LocalStorage
 - **Package Manager**: `uv` (Python), `npm` (Node.js)
 
 ## 🚀 Getting Started
@@ -49,83 +49,40 @@ This will launch:
 - **Backend API**: http://localhost:8000
 - **Frontend UI**: http://localhost:3000
 
-Press `Ctrl+C` to stop both services.
-
 ### 1. Backend Setup
 
-The backend handles the AI logic and API requests.
-
 ```bash
-# Navigate to backend directory
 cd backend
-
-# Initialize environment (install dependencies)
 uv sync
-
-# Create .env file
 cp .env.example .env
-
-# Edit .env and add your OpenAI API Key
-# nano .env
+# Edit .env and add your OPENAI_API_KEY
 ```
-
-**Run the Backend Server:**
-
-```bash
-# Activate virtual environment and run
-source .venv/bin/activate
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-The API will be available at `http://localhost:8000`.
 
 ### 2. Frontend Setup
 
-The frontend provides a modern web interface for generating recipes.
-
 ```bash
-# Navigate to frontend directory
 cd frontend
-
-# Install dependencies
 npm install
-
-# Run the development server
 npm run dev
 ```
 
-The UI will be available at `http://localhost:3000`.
-
 ## 📖 Usage Guide
 
-1.  Open your browser to `http://localhost:3000`.
-2.  Enter a vibe description (e.g., *"Wes Anderson style pastel symmetry"*).
-3.  Click **Generate**.
-4.  View the resulting recipe card with all the settings you need to dial into your camera.
-5.  **(Optional)** Use the "Advanced Settings" toggle to change the AI Model or Base URL temporarily.
-
-## ⚙️ Configuration (.env)
-
-You can configure global defaults in `backend/.env`:
-
-```env
-OPENAI_API_KEY=sk-...           # Required: Your API Key
-OPENAI_MODEL=gpt-4o             # Optional: Default model (default: gpt-4o)
-OPENAI_BASE_URL=...             # Optional: Custom API Endpoint
-```
+1.  **Generate**: Go to the **Generate** tab. Enter a description or **upload/paste reference images** (you can use multiple!).
+2.  **Pin**: If you love a result, click the **Pin** button to save it to your **Personal** tab.
+3.  **Manage**: In the **Personal** tab, you can view your pinned recipes, upload external JSON recipes, or remove ones you no longer need.
+4.  **History**: Browse all past generations organized by date in the **History** tab.
+5.  **Export**: Click **JSON** on any recipe card to download the file.
 
 ## 📂 Project Structure
 
 ```
 gr-recipe-generator/
 ├── backend/            # FastAPI Server
-│   ├── app/            # Application logic & schemas
-│   ├── result/         # (Generated) JSON logs of recipes
-│   └── main.py         # Entry point
+│   └── app/            # Application logic & schemas
 ├── frontend/           # Next.js Web App
-│   ├── app/            # React components & pages
-│   └── public/         # Static assets
-├── result/             # Saved recipe logs (JSON)
+│   └── app/            # UI Components & State
+├── result/             # Server-side history logs (JSON)
 └── README.md           # This file
 ```
 

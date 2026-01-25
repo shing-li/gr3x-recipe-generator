@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
 
 class GlobalSettings(BaseModel):
     exposure_recommendation: str = Field(..., description="建議曝光值, e.g., '-0.3 EV'")
@@ -28,6 +28,7 @@ class RecipeResponse(BaseModel):
 
 class GenerateRequest(BaseModel):
     prompt: str = Field(..., description="使用者輸入的氛圍描述")
+    images: Optional[List[str]] = Field(None, description="List of Base64 encoded image strings")
     api_key: Optional[str] = Field(None, description="OpenAI API Key (Optional if set in env)")
     base_url: Optional[str] = Field(None, description="Custom Base URL (Optional)")
     model: Optional[str] = Field(None, description="Model name (e.g., 'gpt-4o', 'gpt-3.5-turbo'). Defaults to server config.")
